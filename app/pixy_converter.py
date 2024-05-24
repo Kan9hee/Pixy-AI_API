@@ -2,8 +2,6 @@ from flask import Flask, request, jsonify
 import numpy as np
 import pickle
 import re
-import nltk
-from nltk import sent_tokenize
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
@@ -54,7 +52,7 @@ def split_sentences(sentence):
             result.append(s)
     return result
 
-def split_sentences(sentence):
+def multi_tag_split(sentence):
     # [needFiller]가 나타나는 위치 찾기
     needFiller_indices = [i for i, word in enumerate(sentence.split()) if "[needFiller]" in word]
     filled_sentences = []
@@ -64,17 +62,6 @@ def split_sentences(sentence):
         filled_sentence = " ".join(sentence.split()[:index]) + " ".join(sentence.split()[index:]).replace("[needFiller]", "", 1)
         filled_sentences.append(filled_sentence)
     return filled_sentences
-
-def grammar_check(text):
-    sentences = sent_tokenize(text)
-    corrected_sentences = []
-    for sentence in sentences:
-        words = nltk.word_tokenize(sentence)
-        tagged_words = nltk.pos_tag(words)
-        grammar_checked_sentence = " ".join(word for word, tag in tagged_words)
-        corrected_sentences.append(grammar_checked_sentence)
-    corrected_text = " ".join(corrected_sentences)
-    return corrected_text
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -86,8 +73,7 @@ def predict():
         combin_sentence += insert_predicted_filler(model, tokenizer, sentence, filler_index)
         if i < len(request_sentences) - 1:
             combin_sentence += " "
-    completed_sentence = grammar_check(combin_sentence)
-    return jsonify({'completed_sentence': completed_sentence})
+    return jsonify({'combin_sentence': combin_sentence})
 
 if __name__ == '__main__':
     app.run(debug=True)
