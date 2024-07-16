@@ -1,7 +1,9 @@
 Pixy_jenkins_ec2_key.pem
 model_trainer.py
 testCodes.py
-modelTestV5.csv
-modelTrainV5.csv
+testCodes2.py
+testCodes3.py
+modelTest.csv
+modelTrain.csv
 repository관리 계획.txt
 태그별 필러 목록.txt
