@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 import numpy as np
 import pandas as pd
+import os
 import pickle
 import re
 import difflib
@@ -8,6 +9,7 @@ import random
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
+os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
 app = Flask(__name__)
 
 model=load_model("pixyModel.h5")
