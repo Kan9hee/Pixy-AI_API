@@ -1,5 +1,6 @@
 Pixy_jenkins_ec2_key.pem
 Pixy_ai_ec2_key.pem
+Pixy_monitoring_ec2_key.pem
 model_trainer.py
 testCodes.py
 testCodes2.py
