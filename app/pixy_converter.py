@@ -6,6 +6,7 @@ import pickle
 import re
 import difflib
 import random
+import tensorflow as tf
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 
@@ -30,8 +31,11 @@ fillerTagIndexs = {}
 for idx, word in enumerate(fillerTags, start=0):
     fillerTagIndexs[word] = idx
 
-model_input_shape = model.layers[0].input_shape
-maxLength = model_input_shape[1]
+if isinstance(model.layers[0], tf.keras.layers.Embedding):
+    maxLength = model.layers[0].input_dim
+else:
+    model_input_shape = model.layers[0].output_shape
+    maxLength = model_input_shape[1]
 
 def predict_filler(model, tokenizer, sentence, fillerTagIndexs, sequence):
     predicted_probabilities = model.predict(np.array(sequence))[0]
